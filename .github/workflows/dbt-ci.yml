@@ -9,9 +9,6 @@ jobs:
   dbt-build:
     runs-on: windows-latest
 
-    env:
-      DBT_PROFILES_DIR: ${{ github.workspace }}
-
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
@@ -26,6 +23,11 @@ jobs:
           pip install dbt-postgres
 
       - name: Run dbt build
+        env:
+          # This makes the secret available 
+          # as an environement variable
+          DBT_PASSWORD: ${{ secrets.DBT_PASSWORD }}
+          DBT_PROFILES_DIR: .
         run: |
           dbt --version
           dbt debug || true
