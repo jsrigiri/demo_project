@@ -9,6 +9,9 @@ jobs:
   dbt-build:
     runs-on: windows-latest
 
+    env:
+      DBT_PROFILES_DIR: ${{ github.workspace }}
+
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
