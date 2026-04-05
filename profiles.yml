@@ -2,7 +2,7 @@ demo_dag_pg:
   outputs:
     dev:
       dbname: postgres
-      host: localhost
+      host: 127.0.0.1
       pass: "{{ env_var('DBT_PASSWORD') }}"
       port: 5432
       schema: demo_dag
@@ -15,7 +15,7 @@ demo_project:
   outputs:
     dev:
       dbname: postgres_demo
-      host: localhost
+      host: 127.0.0.1
       pass: "{{ env_var('DBT_PASSWORD') }}"
       port: 5432
       schema: public
