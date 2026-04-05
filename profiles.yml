@@ -1,0 +1,25 @@
+demo_dag_pg:
+  outputs:
+    dev:
+      dbname: postgres
+      host: localhost
+      pass: Postgresql2449!!!!
+      port: 5432
+      schema: demo_dag
+      threads: 4
+      type: postgres
+      user: postgres
+  target: dev
+  
+demo_project:
+  outputs:
+    dev:
+      dbname: postgres_demo
+      host: localhost
+      pass: Postgres2449!!!!
+      port: 5432
+      schema: public
+      threads: 4
+      type: postgres
+      user: postgres
+  target: dev
