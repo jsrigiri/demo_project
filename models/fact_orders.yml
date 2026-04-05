@@ -1,0 +1,36 @@
+version: 2
+
+models:
+  - name: fact_orders
+    description: "Incremental fact table of orders"
+    meta:
+      owner: "Data Analytics Team"
+      owner_email: "data-team@example.com"
+      domain: "sales"
+      
+    columns:
+      - name: order_id
+        description: "Surrogate key for the orders"
+        tests:
+          - not_null
+          - unique
+
+      - name: order_date
+        description: "Date of the orders"
+        tests:
+          - not_null
+
+      - name: customer_id
+        description: "Customer identifier"
+        tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('dim_customers')
+                field: customer_id
+
+      - name: order_amount
+        description: "Order value"
+        tests:
+          - not_null
+          - no_invalid_order_amounts

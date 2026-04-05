@@ -1,0 +1,12 @@
+# dbt generated folders
+target/
+dbt_packages/
+logs/
+
+# Python virtual environments
+venv/
+.env/
+
+# Max / Windows system files
+.DS_Store
+Thumbs.db

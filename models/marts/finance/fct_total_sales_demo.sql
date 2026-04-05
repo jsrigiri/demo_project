@@ -1,0 +1,1 @@
+{{ dynamic_total_sales(ref('stg_orders'), 'order_amount') }}
