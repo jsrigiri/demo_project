@@ -7,8 +7,23 @@ on:
 
 jobs:
   dbt-build:
-    runs-on: windows-latest
-
+    runs-on: ubuntu-latest
+    services:
+      # This creates a container named "postgres"
+      postgres:
+        image: postgres:18
+        env:
+          POSTGRES_PASSWORD: ${{ secrets.DBT_PASSWORD }}
+          POSTGRES_DB: postgres
+        ports:
+          - 5432:5432
+        # Critical: Ensures the DB is ready before dbt runs
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retires 5
+          
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
