@@ -14,7 +14,7 @@ jobs:
         image: postgres:18
         env:
           POSTGRES_PASSWORD: ${{ secrets.DBT_PASSWORD }}
-          POSTGRES_DB: postgres
+          POSTGRES_DB: postgres_demo
         ports:
           - 5432:5432
         # Critical: Ensures the DB is ready before dbt runs
