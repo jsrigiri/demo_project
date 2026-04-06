@@ -1,0 +1,25 @@
+demo_dag_pg:
+  outputs:
+    dev:
+      dbname: postgres
+      host: 127.0.0.1
+      pass: "{{ env_var('DBT_PASSWORD') }}"
+      port: 5432
+      schema: demo_dag
+      threads: 4
+      type: postgres
+      user: postgres
+  target: dev
+  
+demo_project:
+  outputs:
+    dev:
+      dbname: postgres_demo
+      host: 127.0.0.1
+      pass: "{{ env_var('DBT_PASSWORD') }}"
+      port: 5432
+      schema: public
+      threads: 4
+      type: postgres
+      user: postgres
+  target: dev

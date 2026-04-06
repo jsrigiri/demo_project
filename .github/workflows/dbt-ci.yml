@@ -1,0 +1,67 @@
+name: dbt CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+
+jobs:
+  dbt-build:
+    runs-on: ubuntu-latest
+    services:
+      # This creates a container named "postgres"
+      postgres:
+        image: postgres:18
+        env:
+          POSTGRES_PASSWORD: ${{ secrets.DBT_PASSWORD }}
+          POSTGRES_DB: postgres_demo
+        ports:
+          - 5432:5432
+        # Critical: Ensures the DB is ready before dbt runs
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+          
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dbt (Postgres adapter)
+        run: |
+          pip install dbt-postgres
+
+      - name: Load Seed Data
+        env:
+            # This makes the secret available 
+            # as an environement variable
+            DBT_PASSWORD: ${{ secrets.DBT_PASSWORD }}
+            DBT_PROFILES_DIR: .
+        run: dbt seed
+
+      - name: Run dbt build
+        env:
+          # This makes the secret available 
+          # as an environement variable
+          DBT_PASSWORD: ${{ secrets.DBT_PASSWORD }}
+          DBT_PROFILES_DIR: .
+        run: |
+          dbt --version
+          dbt debug || true
+          dbt build
+        working-directory: .
+
+      - name: Upload dbt artifacts (logs + target)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: dbt-artifacts
+          path: |
+            logs
+            target
