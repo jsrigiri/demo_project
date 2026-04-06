@@ -37,6 +37,14 @@ jobs:
         run: |
           pip install dbt-postgres
 
+      - name: Load Seed Data
+        env:
+            # This makes the secret available 
+            # as an environement variable
+            DBT_PASSWORD: ${{ secrets.DBT_PASSWORD }}
+            DBT_PROFILES_DIR: .
+        run: dbt seed
+
       - name: Run dbt build
         env:
           # This makes the secret available 
